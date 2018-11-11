@@ -18,7 +18,7 @@ class UploadBox extends Component {
     };
     
     componentDidUpdate() {
-        
+        console.log(this.state.files)
     }
 
 	onDrop = (files) => {
