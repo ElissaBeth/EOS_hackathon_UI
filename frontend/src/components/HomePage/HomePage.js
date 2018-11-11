@@ -15,6 +15,7 @@ import Button from '@material-ui/core/Button';
 
 //componenets
 import UploadBox from '../UploadBox';
+import Presentation from '../Presentation';
 
 class Homepage extends Component {
     constructor(props) {
@@ -42,11 +43,12 @@ class Homepage extends Component {
                                 </div>
                             </div>
                         </nav>
-                        <div>
-                            <div class='container'>
+                        <Presentation />                        
+                        {/* <div class="container">
+                            <div class="container">
                                 <UploadBox />
                             </div>    
-                        </div>
+                        </div> */}
 					</div>
         }
         return (
