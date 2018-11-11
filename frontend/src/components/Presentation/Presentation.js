@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
+const prettyHtml = require('json-pretty-html').default;
 
 const Failed = {
     "scanresults": {
@@ -41,15 +42,17 @@ const Failed = {
         }
     }
 }
+const pFailed = prettyHtml(Failed, Failed.dimensions);
 
 const Passed = {
     "scanresults": {
         "name": "TestContract",
         "id": "1855739281728394",
         "quote": "0",
-        "vulnerabilities": []
+        "vulnerabilities": 'no vulnerabilities found'
     }
 }
+const pPassed = prettyHtml(pPassed, Passed.dimensions);
 
 class Presentation extends Component {
     state = {
@@ -112,13 +115,13 @@ class Presentation extends Component {
     render() {
         if (this.state.pass){
             return (
-                <div>{(JSON.stringifyPassed)}</div>
+                <div class='container'>{(JSON.stringifyPassed)}</div>
             )
         }
 
         if (this.state.fail) {
             return (
-                <div>{JSON.stringify(Failed)}</div>
+                <div class='container'>{JSON.stringify(Failed)}</div>
             )
         }
 
