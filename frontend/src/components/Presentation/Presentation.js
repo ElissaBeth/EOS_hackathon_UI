@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
+import TextField from '@material-ui/core/TextField';
+
 const prettyHtml = require('json-pretty-html').default;
 
 const Failed = {
@@ -63,6 +65,8 @@ class Presentation extends Component {
         files: [],
         pass: null,
         fail: null,
+        purchase: null,
+        paid: null,
 
     }
 
@@ -77,6 +81,10 @@ class Presentation extends Component {
 
         this.setState({ submit: true })
         this.setState({ loading: true })
+    }
+
+    _handlepurchase = () => {
+        this.setState({ purchase: true})
     }
 
     onDrop = (files) => {
@@ -110,18 +118,90 @@ class Presentation extends Component {
 
     }
 
+    showPurchased = () => {
+        if (this.state.files[0].name == 'EOSBet.cpp') {
+            this.setState({ paid: true })
+        }
+    }
+
 
     
     render() {
+
+        if (this.state.paid) {
+            return (
+                <div class='container'>
+                    <h1> vulnerability information </h1>
+                    <div>
+                        {JSON.stringify(Failed)}
+                    </div>
+                </div>
+            )
+        }
+
+        if (this.state.purchase){
+            return (
+            <div class='container'>
+                <TextField
+                    id="standard-full-width"
+                    label="Account Name"
+                    style={{ margin: 8 }}
+                    placeholder="Enter Account Name"
+                    fullWidth
+                    margin="normal"
+                    value={this.state.accountName}
+                    onChange={this._handleTextFieldChange}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+                <TextField
+                    id="standard-full-width"
+                    label="Private Key"
+                    style={{ margin: 8 }}
+                    placeholder="Enter Private Key Here"
+                    fullWidth
+                    margin="normal"
+                    value={this.state.PrivateKey}
+                    onChange={this._handleKeyFieldChange}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                />
+                    <button class="btn waves-effect waves-light" onClick={this.showPurchased}
+                   >
+                    See Results
+                    </button>  
+            </div>
+            )
+        }
+
         if (this.state.pass){
             return (
-                <div class='container'>{(JSON.stringifyPassed)}</div>
+                <div class='container'>
+                    <h1> No vulnerabilities found</h1>
+                    <button>Scan Another File?</button>
+                </div>
             )
         }
 
         if (this.state.fail) {
+            let results = this.state.files[0].name
             return (
-                <div class='container'>{JSON.stringify(Failed)}</div>
+                <div class='container'>
+                    <h1> 1 vulnerability found in: {results}</h1>
+                    <button class="btn waves-effect waves-light"
+                        onClick={this._handlepurchase}
+                   >
+                    Purchase Details
+                    </button>
+                    <br/>
+                    <br/>
+                    <button class="btn waves-effect waves-light" href='/'
+                   >
+                    Scan Another File?
+                    </button>  
+                </div>
             )
         }
 
