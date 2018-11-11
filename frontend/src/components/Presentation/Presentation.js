@@ -1,6 +1,56 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 
+const Failed = {
+    "scanresults": {
+        "name": "TestContract",
+        "id": "1855739281728394",
+        "quote": "500",
+        "vulnerabilities": {
+            "vuln_1": {
+                "name": "bet_transfer_hack",
+                "count": "1",
+                "line_num": "1",
+                "error_code": [
+                    "void transfer(uint64_t sender, uint64_t receiver) {",
+                    "",
+                    "    auto transfer_data = unpack_action_data<st_transfer>();",
+                    "",
+                    "",
+                    "",
+                    "    if (transfer_data.from == _self || transfer_data.from == N(eosbetcasino)) {",
+                    "        return;",
+                    "    }",
+                    "",
+                    "    eosio_assert(transfer_data.quantity.is_valid(), 'Invalid asset');",
+                    "",
+                    "    const uint64_t your_bet_amount = (uint64_t)transfer_data.quantity.amount;",
+                    "    eosio_assert(MINBET <= your_bet_amount, 'Must be greater than min');",
+                    "",
+                    "    increment_liabilities_bet_id(your_bet_amount);",
+                    "",
+                    "    std::string roll_str;",
+                    "    std::string ref_str;",
+                    "    std::string seed_str;",
+                    "",
+                    "    const std::size_t first_break = transfer_data.memo.find(' - ');",
+                    "    roll_str = transfer_data.memo.substr(0, first_break);",
+                    "}",
+                ]
+            }
+        }
+    }
+}
+
+const Passed = {
+    "scanresults": {
+        "name": "TestContract",
+        "id": "1855739281728394",
+        "quote": "0",
+        "vulnerabilities": []
+    }
+}
+
 class Presentation extends Component {
     state = {
         upload: null,
@@ -17,6 +67,7 @@ class Presentation extends Component {
         if (this.state.loading) {
             setTimeout(this.showResult, 3000)
         }
+        JSON.stringify(Failed)
     }
 
     _handlesubmit = () => {
@@ -61,13 +112,13 @@ class Presentation extends Component {
     render() {
         if (this.state.pass){
             return (
-                <h1>pass</h1>
+                <div>{(JSON.stringifyPassed)}</div>
             )
         }
 
         if (this.state.fail) {
             return (
-                <h1>fail</h1>
+                <div>{JSON.stringify(Failed)}</div>
             )
         }
 
